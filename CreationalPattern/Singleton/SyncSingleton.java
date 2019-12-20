@@ -1,6 +1,6 @@
 /**
  * 同步锁单例模式
- * 线程安全，但同步锁导致效率较低
+ * 线程安全，但同步锁导致效率较低，可使用volatile减少读取的开销
  */
 // 整个实例方法加同步锁，效率低
 public class SyncSyncSingleton
@@ -43,7 +43,7 @@ public class SyncSingleton
 // 双重校验锁机制的同步锁单例模式
 public class SyncSingleton
 {
-    private static SyncSingleton instance = null;
+    private static volatile SyncSingleton instance = null; // 减少读操作带来的开销
     private SyncSingleton() {} // 私有化
 
     // 公开全局访问权限
