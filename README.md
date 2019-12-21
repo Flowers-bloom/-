@@ -1,8 +1,29 @@
 # 设计模式
 > 学习自：https://github.com/h2pl/Java-Tutorial#Java%E8%BF%9B%E9%98%B6
-## 创建型模式
+## 目录
+* [创建型模式](#创建型模式)
+    * [单例模式](#单例模式)
+    * [工厂模式](#工厂模式)
+    * [建造者模式](#建造者模式)
+    * [原型模式](#原型模式)
+* [结构型模式](#结构型模式)
+    * [代理模式](#代理模式)
+    * [桥梁模式](#桥梁模式)
+    * [装饰模式](#装饰模式)
+    * [门面模式](#门面模式) 
+    * [组合模式](#组合模式) 
+    * [享元模式](#享元模式) 
+* [行为型模式](#行为型模式)
+    * [策略模式](#策略模式) 
+    * [观察者模式](#观察者模式) 
+    * [责任链模式](#责任链模式) 
+    * [模板方法模式](#模板方法模式) 
+    * [状态模式](#状态模式) 
+
+
+## <a id="创建型模式">创建型模式</a>
 提供友好的创建对象的方式
-### 单例模式
+### <a id="单例模式">单例模式</a>
 * 简单单例模式
     * 懒汉式
     ```java
@@ -88,7 +109,7 @@
     }
     ```
 饿汉式的单例模式是线程安全的；而懒汉式的单例模式，如果不加入锁机制，那么是线程不安全的。
-### 工厂模式
+### <a id="工厂模式">工厂模式</a>
 * 简单工厂模式
 ```java
 /**
@@ -218,7 +239,7 @@ public class APP {
     }
 }
 ```
-### 建造者模式
+### <a id="建造者模式">建造者模式</a>
 ```java
 /**
  * 这个模式写法吸引人，但是写了很多无用的代码，感觉没有太高性价比
@@ -308,12 +329,12 @@ public class Singleton {
     }
 }
 ```
-### 原型模式（略）
+### <a id="原型模式">原型模式</a>（略）
 简而言之，就是对象的浅拷贝和深拷贝
 
-## 结构型模式
+## <a id="结构型模式">结构型模式</a> 
 通过改变代码结构来达到解耦的目的，使得代码更加容易维护和扩展
-### 代理模式
+### <a id="代理模式">代理模式</a> 
 ```java
 /**
  * 最常使用的模式之一，用一个代理来隐藏具体的实现细节，通常还在真实实现的前后
@@ -378,7 +399,7 @@ public class App
     }
 }
 ```
-### 适配器模式
+### <a id="适配器模式">适配器模式</a>
 * 对象适配
 ```java
 // 将具体对象注入适配器中，然后适配器实现指定接口，从而实现将对象适配成需要的对象
@@ -436,9 +457,8 @@ public class APP
 * 类适配
 适配器继承要适配的类，然后适配器再实现接口，从而将适配类适配成目标类
 * 适配器模式和代理模式的区别
-适配器模式和代理模式虽然代码结构相似，但是两者的目的的区别是很明显的，
-适配器目的在于将类或对象适配成目标形式，而代理模式目的在于对原方法的代理以及增强
-### 桥梁模式
+适配器模式和代理模式虽然代码结构相似，但是两者的目的的区别是很明显的，适配器目的在于将类或对象适配成目标形式，而代理模式目的在于对原方法的代理以及增强
+### <a id="桥梁模式">桥梁模式</a>
 ```java
 // 桥梁，解耦的关键
 public interface DrawAPI {
@@ -513,9 +533,8 @@ public class APP
     }
 }
 ```
-通过抽象父类派生出不同的子类，而父类使用了桥梁接口，使得派生子类可以调用实现了桥梁接口的具体类的方法，
-即通过实现了桥梁接口的类赋予了派生子类特定的属性或行为，从而*实现了对象属性或行为的解耦*，增强了代码的可扩展性。
-### 装饰模式
+通过抽象父类派生出不同的子类，而父类使用了桥梁接口，使得派生子类可以调用实现了桥梁接口的具体类的方法，即通过实现了桥梁接口的类赋予了派生子类特定的属性或行为，从而*实现了对象属性或行为的解耦*，增强了代码的可扩展性。
+### <a id="装饰模式">装饰模式</a>
 ```java
 // 定义饮料基类
 public abstract class Beverage {
@@ -591,9 +610,8 @@ public class APP
     }
 }
 ```
-首先，定义一个抽象组件基类，让一些具体组件类和装饰器抽象基类继承该基类；然后，就可以定义多个具体的装饰器；
-在具体的装饰器类中依赖抽象组件基类，从而可以调用具体组件类方法，并且加上“装饰”。
-### 门面模式（外观模式 Facade Pattern）
+首先，定义一个抽象组件基类，让一些具体组件类和装饰器抽象基类继承该基类；然后，就可以定义多个具体的装饰器；在具体的装饰器类中依赖抽象组件基类，从而可以调用具体组件类方法，并且加上“装饰”。
+### <a id="门面模式">门面模式</a>（外观模式 Facade Pattern）
 ```java
 // 不使用门面模式
 public class APP
@@ -648,9 +666,8 @@ public class APP
     }
 }
 ```
-门面模式的优势在于使得客户端不需要再关注实例化时应该使用哪个类，而是直接调用门面提供的方法就可以，因为门面模式
-提供的方法名对于客户端来说十分友好 
-### 组合模式
+门面模式的优势在于使得客户端不需要再关注实例化时应该使用哪个类，而是直接调用门面提供的方法就可以，因为门面模式提供的方法名对于客户端来说十分友好 
+### <a id="组合模式">组合模式</a>
 组合模式用于表示具有层次结构的数据，使得我们对单个对象和组合对象的访问具有一致性。
 ```java
 public class Employee {
@@ -684,15 +701,355 @@ public class Employee {
 }
 ``` 
 通常，这种类需要定义 add(node)、remove(node)、getChildren() 这些方法。
-### 享元模式（轻量级 Flyweight Pattern）  
-Flyweight 是轻量级的意思，享元分开来说就是 共享 元器件，也就是复用已经生成的对象，这种做法当然也就是轻量级的了。
-复用对象最简单的方式是，用一个 HashMap 来存放每次新生成的对象。每次需要一个对象的时候，先到 HashMap 中看看有没有，
-如果没有，再生成新的对象，然后将这个对象放入 HashMap 中。
-## 行为型模式
-### 观察者模式 
+### <a id="享元模式">享元模式</a>（轻量级 Flyweight Pattern）  
+Flyweight 是轻量级的意思，享元分开来说就是 共享 元器件，也就是复用已经生成的对象，这种做法当然也就是轻量级的了。  
+复用对象最简单的方式是，用一个 HashMap 来存放每次新生成的对象。每次需要一个对象的时候，先到 HashMap 中看看有没有，如果没有，再生成新的对象，然后将这个对象放入 HashMap 中。
+
+## <a id="行为型模式">行为型模式</a>
+关注各个类之间的相互作用，将职责划分清，使我们的代码更加清晰
+### <a id="策略模式">策略模式</a>
+```java
+/**
+ * 场景：我们需要画一个图形，可选的策略就是用红色笔来画，还是绿色笔来画，或者蓝色笔来画 
+ */
+// 首先，定义策略接口
+public interface Strategy {
+   public void draw(int radius, int x, int y);
+}
+
+// 定义具体策略
+public class RedPen implements Strategy {
+   @Override
+   public void draw(int radius, int x, int y) {
+      System.out.println("用红色笔画图，radius:" + radius + ", x:" + x + ", y:" + y);
+   }
+}
+public class GreenPen implements Strategy {
+   @Override
+   public void draw(int radius, int x, int y) {
+      System.out.println("用绿色笔画图，radius:" + radius + ", x:" + x + ", y:" + y);
+   }
+}
+public class BluePen implements Strategy {
+   @Override
+   public void draw(int radius, int x, int y) {
+      System.out.println("用蓝色笔画图，radius:" + radius + ", x:" + x + ", y:" + y);
+   }
+}
+
+// 使用策略的类
+public class Context {
+   private Strategy strategy;
+
+   public Context(Strategy strategy){
+      this.strategy = strategy;
+   }
+
+   public int executeDraw(int radius, int x, int y){
+      return strategy.draw(radius, x, y);
+   }
+}
+
+// 客户端使用
+public class APP
+{
+    public static void main(String[] args) {
+        Context context = new Context(new BluePen()); // 使用绿色笔来画
+          context.executeDraw(10, 0, 0);
+    }
+}
+```
+可以看出，策略模式和桥梁模式很相似，但策略模式比桥梁模式结构更简单，耦合度稍高一些。在实际开发中，策略模式比桥梁模式使用更多。
+
+### <a id="观察者模式">观察者模式</a>
+```java
+/**
+ * 通常场景下，既然用到了观察者模式，我们就是希望一个事件出来了，会有多个不同的类需要处理相应的信息
+ * 比如，订单修改成功事件，我们希望发短信的类得到通知、发邮件的类得到通知、处理物流信息的类得到通知等
+ * 实际生产中，观察者模式往往使用消息中间件实现
+ */
+// 首先，需要定义主题，每个主题需要持有观察者列表的引用，用于在数据变化时通知所有观察者
+public class Subject {
+
+   private List<Observer> observers = new ArrayList<Observer>();
+   private int state;
+
+   public int getState() {
+      return state;
+   }
+
+   public void setState(int state) {
+      this.state = state;
+      // 数据已变更，通知观察者们
+      notifyAllObservers();
+   }
+
+   public void attach(Observer observer){
+      observers.add(observer);        
+   }
+
+   // 通知观察者们
+   public void notifyAllObservers(){
+      for (Observer observer : observers) {
+         observer.update();
+      }
+   }     
+}
+
+// 定义观察者接口
+public abstract class Observer {
+   protected Subject subject;
+   public abstract void update();
+}
+
+// 定义具体的观察者
+public class BinaryObserver extends Observer {
+
+      // 在构造方法中进行订阅主题
+    public BinaryObserver(Subject subject) {
+        this.subject = subject;
+        // 通常在构造方法中将 this 发布出去的操作一定要小心
+        this.subject.attach(this);
+    }
+
+      // 该方法由主题类在数据变更的时候进行调用
+    @Override
+    public void update() {
+        String result = Integer.toBinaryString(subject.getState());
+        System.out.println("订阅的数据发生变化，新的数据处理为二进制值为：" + result);
+    }
+}
+
+public class HexaObserver extends Observer {
+
+    public HexaObserver(Subject subject) {
+        this.subject = subject;
+        this.subject.attach(this);
+    }
+
+    @Override
+    public void update() {
+          String result = Integer.toHexString(subject.getState()).toUpperCase();
+        System.out.println("订阅的数据发生变化，新的数据处理为十六进制值为：" + result);
+    }
+}
+
+public class APP
+{
+    public static void main(String[] args) {
+        // 先定义一个主题
+          Subject subject1 = new Subject();
+          // 定义观察者
+          new BinaryObserver(subject1);
+          new HexaObserver(subject1);
+    
+          // 模拟数据变更，这个时候，观察者们的 update 方法将会被调用
+          subject.setState(11);
+    }
+}
+```
+
 * java自带观察者实现工具类  
 ```
 观察者 <--消息推送----订阅服务-->  主题  
 主题    extends   java.util.Observable  
 观察者   implements   java.util.Observer
+```
+
+### <a id="责任链模式">责任链模式</a>
+责任链通常需要先建立一个单向链表，然后调用方只需要调用头部节点就可以了，后面会自动流转下去。比如流程审批就是一个很好的例子，只要终端用户提交申请，根据申请的内容信息，自动建立一条责任链，然后就可以开始流转了。
+```java
+/**
+ * 场景：用户参加一个活动可以领取奖品，但是活动需要进行很多的规则校验然后才能放行，
+ * 比如首先需要校验用户是否是新用户、今日参与人数是否有限额、全场参与人数是否有限额等等。
+ * 设定的规则都通过后，才能让用户领走奖品
+ */
+// 定义抽象处理者
+public abstract class RuleHandler {
+
+      // 后继节点
+    protected RuleHandler next;
+
+    public abstract void apply(Context context);
+
+    public void setNext(RuleHandler next) {
+        this.next = next;
+    }
+    public RuleHandler getNext() {
+        return next;
+    }
+}
+
+// 定义具体处理者
+public class NewUserRuleHandler extends RuleHandler {
+
+    public void apply(Context context) {
+        if (context.isNewUser()) {
+              // 如果有后继节点的话，传递下去
+            if (this.getNext() != null) {
+                this.getNext().apply(context);
+            }
+        } else {
+            throw new RuntimeException("该活动仅限新用户参与");
+        }
+    }
+
+}
+
+public class LocationRuleHandler extends RuleHandler {
+    public void apply(Context context) {
+        boolean allowed = activityService.isSupportedLocation(context.getLocation);
+          if (allowed) {
+            if (this.getNext() != null) {
+                this.getNext().apply(context);
+            }
+        } else  {
+            throw new RuntimeException("非常抱歉，您所在的地区无法参与本次活动");
+        }
+    }
+}
+
+public class LimitRuleHandler extends RuleHandler {
+    public void apply(Context context) {
+          int remainedTimes = activityService.queryRemainedTimes(context); // 查询剩余奖品
+        if (remainedTimes > 0) {
+            if (this.getNext() != null) {
+                this.getNext().apply(userInfo);
+            }
+        } else {
+            throw new RuntimeException("您来得太晚了，奖品被领完了");
+        }
+    }
+}
+
+public class APP
+{
+    public static void main(String[] args) {
+        RuleHandler newUserHandler = new NewUserRuleHandler();
+        RuleHandler locationHandler = new LocationRuleHandler();
+        RuleHandler limitHandler = new LimitRuleHandler();
+        
+        // 设置责任链
+        newUserHandler.setNext(locationHandler);  
+        locationHandler.setNext(limitHandler);
+
+        // 提交请求
+        newUserHandler.apply(context);
+    }
+}
+```
+
+### <a id="模板方法模式">模板方法模式</a>
+在含有继承结构的代码中，模板方法模式是非常常用的，也是开源代码中大量被使用的。
+```java
+/**
+ * 模板方法只负责声明步骤，即要做什么，而具体怎么做，由子类实现
+ */
+public abstract class AbstractTemplate {
+    // 这就是模板方法
+    public void templateMethod(){
+        init();
+        apply(); // 这个是重点
+        end(); // 可以作为钩子方法
+    }
+    protected void init() {
+        System.out.println("init 抽象层已经实现，子类也可以选择覆写");
+    }
+      // 留给子类实现
+    protected abstract void apply();
+    protected void end() {
+    }
+}
+
+// 实现类
+// 钩子方法，是模板方法中的其中一个方法，当调用模板方法时被执行，需要的时候可以被子类覆盖
+// 说白了，钩子方法，就是“留后手”
+public class ConcreteTemplate extends AbstractTemplate {
+    public void apply() {
+        System.out.println("子类实现抽象方法 apply");
+    }
+      public void end() {
+        System.out.println("我们可以把 method3 当做钩子方法来使用，需要的时候覆写就可以了");
+    }
+}
+
+public class APP
+{
+    public static void main(String[] args) {
+        AbstractTemplate t = new ConcreteTemplate();
+          // 调用模板方法
+          t.templateMethod();
+    }
+}
+```
+
+### <a id="状态模式">状态模式</a>
+```java
+// 状态模式核心在于，将不同的状态引入独立的对象中，使得状态转换变得更加明确，减少对象间的依赖
+// 定义环境类，即需要处理的对象
+public class Context {
+    private State state;
+    private String name;
+    public Context(String name) {
+        this.name = name;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+    public void getState() {
+        return this.state;
+    }
+}
+
+// 定义状态接口
+public interface State {
+   public void doAction(Context context);
+}
+
+// 定义具体的状态处理类，其依赖于环境类
+public class DeductState implements State {
+
+   public void doAction(Context context) {
+      System.out.println("商品卖出，准备减库存");
+      context.setState(this); // 设置状态
+
+      //... 执行减库存的具体操作
+   }
+
+   public String toString(){
+      return "Deduct State";
+   }
+}
+
+public class RevertState implements State {
+    public void doAction(Context context) {
+        System.out.println("给此商品补库存");
+          context.setState(this);
+
+          //... 执行加库存的具体操作
+    }
+      public String toString() {
+        return "Revert State";
+    }
+}
+
+public class APP
+{
+    public static void main(String[] args) {
+        // 我们需要操作的是 iPhone X
+        Context context = new Context("iPhone X");
+    
+        // 看看怎么进行补库存操作
+        State revertState = new RevertState();
+        revertState.doAction(context);
+    
+        // 同样的，减库存操作也非常简单
+        State deductState = new DeductState();
+        deductState.doAction(context);
+    
+        // 如果需要我们可以获取当前的状态
+        //context.getState().toString();
+    }
+}
 ```
