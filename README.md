@@ -45,7 +45,7 @@
     ```java
     public class SyncSingleton
     {
-        private static volatile SyncSingleton instance = null; // 减少读操作带来的开销
+        private static volatile SyncSingleton instance = null; // volatile减少读操作带来的开销
         private SyncSingleton() {} // 私有化
     
         // 公开全局访问权限
@@ -309,6 +309,7 @@ public class Singleton {
 }
 ```
 ### 原型模式（略）
+简而言之，就是对象的浅拷贝和深拷贝
 
 ## 结构型模式
 通过改变代码结构来达到解耦的目的，使得代码更加容易维护和扩展
@@ -437,7 +438,256 @@ public class APP
 * 适配器模式和代理模式的区别
 适配器模式和代理模式虽然代码结构相似，但是两者的目的的区别是很明显的，
 适配器目的在于将类或对象适配成目标形式，而代理模式目的在于对原方法的代理以及增强
+### 桥梁模式
+```java
+// 桥梁，解耦的关键
+public interface DrawAPI {
+   public void draw(int radius, int x, int y);
+}
+
+public class RedPen implements DrawAPI {
+   @Override
+   public void draw(int radius, int x, int y) {
+      System.out.println("用红色笔画图，radius:" + radius + ", x:" + x + ", y:" + y);
+   }
+}
+public class GreenPen implements DrawAPI {
+   @Override
+   public void draw(int radius, int x, int y) {
+      System.out.println("用绿色笔画图，radius:" + radius + ", x:" + x + ", y:" + y);
+   }
+}
+public class BluePen implements DrawAPI {
+   @Override
+   public void draw(int radius, int x, int y) {
+      System.out.println("用蓝色笔画图，radius:" + radius + ", x:" + x + ", y:" + y);
+   }
+}
+
+// 抽象，使用桥梁联系
+public abstract class Shape {
+   protected DrawAPI drawAPI;
+
+   protected Shape(DrawAPI drawAPI){
+      this.drawAPI = drawAPI;
+   }
+   public abstract void draw();    
+}
+
+// 圆形
+public class Circle extends Shape {
+   private int radius;
+
+   public Circle(int radius, DrawAPI drawAPI) {
+      super(drawAPI);
+      this.radius = radius;
+   }
+
+   public void draw() {
+      drawAPI.draw(radius, 0, 0);
+   }
+}
+// 长方形
+public class Rectangle extends Shape {
+    private int x;
+      private int y;
+
+      public Rectangle(int x, int y, DrawAPI drawAPI) {
+        super(drawAPI);
+          this.x = x;
+          this.y = y;
+    }
+      public void draw() {
+      drawAPI.draw(0, x, y);
+   }
+}
+
+public class APP
+{
+    public static void main(String[] args) {
+        Shape greenCircle = new Circle(10, new GreenPen());
+          Shape redRectangle = new Rectangle(4, 8, new RedPen());
     
+          greenCircle.draw();
+          redRectangle.draw();
+    }
+}
+```
+通过抽象父类派生出不同的子类，而父类使用了桥梁接口，使得派生子类可以调用实现了桥梁接口的具体类的方法，
+即通过实现了桥梁接口的类赋予了派生子类特定的属性或行为，从而*实现了对象属性或行为的解耦*，增强了代码的可扩展性。
+### 装饰模式
+```java
+// 定义饮料基类
+public abstract class Beverage {
+      // 返回描述
+      public abstract String getDescription();
+      // 返回价格
+      public abstract double cost();
+}
+
+// 基础饮料实现
+public class BlackTea extends Beverage {
+      public String getDescription() {
+        return "红茶";
+    }
+      public double cost() {
+        return 10;
+    }
+}
+public class GreenTea extends Beverage {
+    public String getDescription() {
+        return "绿茶";
+    }
+      public double cost() {
+        return 11;
+    }
+}
+
+// 调料（装饰器的基类）
+public abstract class Condiment extends Beverage {
+
+}
+
+public class Lemon extends Condiment {
+    private Beverage bevarage;
+      // 这里很关键，需要传入具体的饮料，如需要传入没有被装饰的红茶或绿茶，
+      // 当然也可以传入已经装饰好的芒果绿茶，这样可以做芒果柠檬绿茶
+      public Lemon(Beverage bevarage) {
+        this.bevarage = bevarage;
+    }
+      public String getDescription() {
+        // 装饰
+        return bevarage.getDescription() + ", 加柠檬";
+    }
+      public double cost() {
+          // 装饰
+        return beverage.cost() + 2; // 加柠檬需要 2 元
+    }
+}
+public class Mango extends Condiment {
+    private Beverage bevarage;
+      public Mango(Beverage bevarage) {
+        this.bevarage = bevarage;
+    }
+      public String getDescription() {
+        return bevarage.getDescription() + ", 加芒果";
+    }
+      public double cost() {
+        return beverage.cost() + 3; // 加芒果需要 3 元
+    }
+}
+
+public class APP
+{
+    public static void main(String[] args) {
+          // 首先，我们需要一个基础饮料，红茶、绿茶或咖啡
+        Beverage beverage = new GreenTea();
+          // 开始装饰
+          beverage = new Lemon(beverage); // 先加一份柠檬
+          beverage = new Mongo(beverage); // 再加一份芒果
+    
+          System.out.println(beverage.getDescription() + " 价格：￥" + beverage.cost());
+          //"绿茶, 加柠檬, 加芒果 价格：￥16"
+    }
+}
+```
+首先，定义一个抽象组件基类，让一些具体组件类和装饰器抽象基类继承该基类；然后，就可以定义多个具体的装饰器；
+在具体的装饰器类中依赖抽象组件基类，从而可以调用具体组件类方法，并且加上“装饰”。
+### 门面模式（外观模式 Facade Pattern）
+```java
+// 不使用门面模式
+public class APP
+{
+    public static void main(String[] args) {
+        // 画一个圆形
+          Shape circle = new Circle();
+          circle.draw();
+    
+          // 画一个长方形
+          Shape rectangle = new Rectangle();
+          rectangle.draw();
+    }
+}
+```
+```java
+// 门面模式调用
+public class ShapeMaker {
+   private Shape circle;
+   private Shape rectangle;
+   private Shape square;
+
+   public ShapeMaker() {
+      circle = new Circle();
+      rectangle = new Rectangle();
+      square = new Square();
+   }
+
+  /**
+   * 下面定义一堆方法，具体应该调用什么方法，由这个门面来决定
+   */
+   public void drawCircle(){
+      circle.draw();
+   }
+   public void drawRectangle(){
+      rectangle.draw();
+   }
+   public void drawSquare(){
+      square.draw();
+   }
+}
+
+public class APP
+{
+    public static void main(String[] args) {
+      ShapeMaker shapeMaker = new ShapeMaker();
+    
+      // 客户端调用现在更加清晰了
+      shapeMaker.drawCircle();
+      shapeMaker.drawRectangle();
+      shapeMaker.drawSquare();        
+    }
+}
+```
+门面模式的优势在于使得客户端不需要再关注实例化时应该使用哪个类，而是直接调用门面提供的方法就可以，因为门面模式
+提供的方法名对于客户端来说十分友好 
+### 组合模式
+组合模式用于表示具有层次结构的数据，使得我们对单个对象和组合对象的访问具有一致性。
+```java
+public class Employee {
+   private String name;
+   private String dept;
+   private int salary;
+   private List<Employee> subordinates; // 下属
+
+   public Employee(String name,String dept, int sal) {
+      this.name = name;
+      this.dept = dept;
+      this.salary = sal;
+      subordinates = new ArrayList<Employee>();
+   }
+
+   public void add(Employee e) {
+      subordinates.add(e);
+   }
+
+   public void remove(Employee e) {
+      subordinates.remove(e);
+   }
+
+   public List<Employee> getSubordinates(){
+     return subordinates;
+   }
+
+   public String toString(){
+      return ("Employee :[ Name : " + name + ", dept : " + dept + ", salary :" + salary+" ]");
+   }   
+}
+``` 
+通常，这种类需要定义 add(node)、remove(node)、getChildren() 这些方法。
+### 享元模式（轻量级 Flyweight Pattern）  
+Flyweight 是轻量级的意思，享元分开来说就是 共享 元器件，也就是复用已经生成的对象，这种做法当然也就是轻量级的了。
+复用对象最简单的方式是，用一个 HashMap 来存放每次新生成的对象。每次需要一个对象的时候，先到 HashMap 中看看有没有，
+如果没有，再生成新的对象，然后将这个对象放入 HashMap 中。
 ## 行为型模式
 ### 观察者模式 
 * java自带观察者实现工具类  
